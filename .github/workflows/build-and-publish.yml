@@ -22,6 +22,14 @@ jobs:
     - name: Build docker image
       run: docker build . -t ${{ env.image-name }}
       
+    - name: Scan docker image
+      uses: azure/container-scan@v0
+      with:
+        image-name: ${{ env.image-name }}
+        severity-threshold: MEDIUM
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GH_CR }}
+      
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v1
       with:
