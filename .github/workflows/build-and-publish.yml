@@ -11,6 +11,7 @@ on:
 env:
   image-name: ghcr.io/npmulder/cryptovault-api:${{ github.sha }}
   image-name-unit-tests: unit-tests:latest
+  CODECOV_TOKEN='7a2696cd-64ca-4a34-9b51-9c813a1099a9'
 
 jobs:
   build-and-publish:
@@ -45,8 +46,10 @@ jobs:
     - name: Code coverage [codecov]
       uses: codecov/codecov-action@v1.2.1
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: ${{ github.workspace }}/path/to/artifacts/testresults/coverage.info
         verbose: true
+        fail_ci_if_error: true
       
     - name: Build docker image
       run: docker build . -t ${{ env.image-name }}
