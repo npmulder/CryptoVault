@@ -6,6 +6,9 @@ EXPOSE 80
 
 ENV ASPNETCORE_URLS=http://+:80
 
+RUN addgroup -g 1000 dotnet && \
+    adduser -u 1000 -G dotnet -s /bin/sh -D dotnet
+
 FROM mcr.microsoft.com/dotnet/sdk:${VERSION} AS build
 WORKDIR /app
 COPY . .
@@ -29,5 +32,5 @@ RUN dotnet publish \
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /out .
+COPY --chown=dotnet:dotnetgroup --from=publish /out .
 ENTRYPOINT ["./CryptoVault.Api"]
