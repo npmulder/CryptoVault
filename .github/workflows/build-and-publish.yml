@@ -11,7 +11,6 @@ on:
 env:
   image-name: ghcr.io/npmulder/cryptovault-api:${{ github.sha }}
   image-name-unit-tests: unit-tests:latest
-  CODECOV_TOKEN='7a2696cd-64ca-4a34-9b51-9c813a1099a9'
 
 jobs:
   build-and-publish:
