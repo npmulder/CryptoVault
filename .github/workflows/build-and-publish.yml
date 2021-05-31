@@ -32,6 +32,15 @@ jobs:
       with:
         name: unit-test-results
         path: ${{ github.workspace }}/path/to/artifacts/testresults/test_results_unit_test.trx
+
+    - name: Unit tests [publish]
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Unit tests
+        path: ${{ github.workspace }}/path/to/artifacts/testresults/test_results_unit_test.trx
+        reporter: dotnet-trx
+        token: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Build docker image
       run: docker build . -t ${{ env.image-name }}
