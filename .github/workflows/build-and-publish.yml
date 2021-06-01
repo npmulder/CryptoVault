@@ -19,6 +19,8 @@ jobs:
     steps:
     - name: Checkout the repo
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Unit tests [build]
       run: docker build --target unit-test -t ${{ env.image-name-unit-tests }} .
@@ -42,23 +44,13 @@ jobs:
         reporter: dotnet-trx
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Code coverage [coveralls]  
-      id: coveralls
-      uses: coverallsapp/github-action@v1.1.2 
+    - name: Code coverage [Code Climate]
+      uses: paambaati/codeclimate-action@v2.7.5
+      env:
+        CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }} 
-        path-to-lcov: ${{ github.workspace }}/path/to/artifacts/testresults/coverage.info
-    
-    - name: Code coverage response [coveralls]
-      run: echo "${{ steps.coveralls.outputs.coveralls-api-result }}"
-
-    - name: Code coverage [codecov]
-      uses: codecov/codecov-action@v1.2.1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ${{ github.workspace }}/path/to/artifacts/testresults/coverage.info
-        verbose: true
-        fail_ci_if_error: true
+        coverageLocations: ${{ github.workspace }}/path/to/artifacts/testresults/coverage.info:lcov
+        prefix: /code/
       
     - name: Build docker image
       run: docker build . -t ${{ env.image-name }}
