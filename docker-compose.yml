@@ -7,6 +7,6 @@ services:
     image: cryptovaultapi
     build:
       context: .
-      dockerfile: src/CryptoVault.Api/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - 80:80
