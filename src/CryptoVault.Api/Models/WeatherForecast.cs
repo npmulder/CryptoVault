@@ -1,6 +1,6 @@
 using System;
 
-namespace CryptoVault.Api
+namespace CryptoVault.Api.Models
 {
     public class WeatherForecast
     {
